@@ -3,15 +3,16 @@ const express = require('express'); // Express framework for handling HTTP reque
 const bodyParser = require('body-parser'); // Middleware for parsing request bodies
 const crypto = require('crypto'); // Node.js crypto module for encryption and decryption
 const _sodium = require('libsodium-wrappers');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const PORT = process.env.ENCRYPTING_PRIVATE_KEY;
 
 const port = 3000; // Port on which the server will listen
-const PRIVATE_KEY_1 =
-  'MC4CAQEwBQYDK2VuBCIEILgcht9h660ZeO36tG+QuHGNcLN9JuAzxHWZl09f57Bh';
-const PUBLIC_KEY_1 =
-  'MCowBQYDK2VuAyEAlKHWJWiEiHFGlAJ6TE4VMGaeQUYg5DHEpuQdiq6flnQ=';
-const REQUEST_ID = '6a6abf53-674f-4d6d-a52b-62e3fda55e04';
-const SIGNING_PRIVATE_KEY =
-  '7M2L3q9y5gS/dq21Ly3Y3VtYEwgmGM1tM4n0wce/WgcJcOzvdfKo+AUEulIyQCawS39dc6uicu8NAaEpciPajg==';
+const ENCRYPTING_PRIVATE_KEY = process.env.ENCRYPTING_PRIVATE_KEY;
+const ENCRYPTING_PUBLIC_KEY = process.env.ENCRYPTING_PUBLIC_KEY;
+const REQUEST_ID = process.env.REQUEST_ID;
+const SIGNING_PRIVATE_KEY = process.env.SIGNING_PRIVATE_KEY;
 
 const htmlFile = `
 <!--Contents of ondc-site-verification.html. -->
@@ -30,12 +31,12 @@ const htmlFile = `
 `;
 // Pre-defined public and private keys
 const privateKey = crypto.createPrivateKey({
-  key: Buffer.from(PRIVATE_KEY_1, 'base64'), // Decode private key from base64
+  key: Buffer.from(ENCRYPTING_PRIVATE_KEY, 'base64'), // Decode private key from base64
   format: 'der', // Specify the key format as DER
   type: 'pkcs8', // Specify the key type as PKCS#8
 });
 const publicKey = crypto.createPublicKey({
-  key: Buffer.from(PUBLIC_KEY_1, 'base64'), // Decode public key from base64
+  key: Buffer.from(ENCRYPTING_PUBLIC_KEY, 'base64'), // Decode public key from base64
   format: 'der', // Specify the key format as DER
   type: 'spki', // Specify the key type as SubjectPublicKeyInfo (SPKI)
 });
